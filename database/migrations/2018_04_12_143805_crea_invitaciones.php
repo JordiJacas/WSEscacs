@@ -13,7 +13,7 @@ class CreaInvitaciones extends Migration
      */
     public function up()
     {
-        Schema::create('solicitudesPartidas', function (Blueprint $table) {
+        Schema::create('Invitaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_usuario1')->unsigned();
             $table->integer('id_usuario2')->unsigned();
@@ -34,6 +34,6 @@ class CreaInvitaciones extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitudesPartidas');
+        Schema::dropIfExists('Invitaciones');
     }
 }

@@ -16,7 +16,7 @@ class InvitacionController extends Master
     	$userID2 = $this->getIdUserFromName($request->input('name'));
 
     	if($userID1 != false && $userID2 != false){
-    		$solicitudesPartida = new SolicitudesPartida;
+    		$solicitudesPartida = new Invitaciones;
 		    $solicitudesPartida->id_usuario1 = $userID1;
 		    $solicitudesPartida->id_usuario2 = $userID2;
 		    $solicitudesPartida->save();
@@ -30,7 +30,7 @@ class InvitacionController extends Master
     function ver(Request $request){
     	$id_usuario = $this->getIdUserFromToken($request->input('token'));
     	if($id_usuario != false){
-    		$mensaje = SolicitudesPartida::from('users as u1')
+    		$mensaje = Invitaciones::from('users as u1')
     			->join('solicitudesPartidas as sp', function($join){
                     $join->on('u1.id', '=', 'sp.id_usuario2');
                 })->join('users as u2', function($join){
@@ -52,7 +52,7 @@ class InvitacionController extends Master
  
         if($userID1 != false && $userID2 != false){
             if($respuesta == 1){
-                SolicitudesPartida::where([["id_usuario1", $userID2],["id_usuario2", $userID1]])->delete();
+                Invitaciones::where([["id_usuario1", $userID2],["id_usuario2", $userID1]])->delete();
 
                 $partida = new Partida();
                 $partida->id_jugador_negro=$userID2;
@@ -65,7 +65,7 @@ class InvitacionController extends Master
 
             }else if($respuesta == 0){
 
-                SolicitudesPartida::where([["id_usuario1", $userID2],["id_usuario2", $userID1]])->delete();
+                Invitaciones::where([["id_usuario1", $userID2],["id_usuario2", $userID1]])->delete();
                 $mensaje = "Rechazada";
             }else $mensaje = "Respuesta no valida.";
         }else $mensaje="No se ha podido obtener el usuario";

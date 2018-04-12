@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Invitaciones extends Model
 {
     //
-    protected $table = "solicitudesPartidas";
+    protected $table = "Invitaciones";
 }
