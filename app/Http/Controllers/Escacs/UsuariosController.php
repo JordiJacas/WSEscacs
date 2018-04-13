@@ -20,18 +20,17 @@ class UsuariosController extends Master
     	if (Auth::attempt(['email' => $email, 'password' => $password])){
 	    	$token = $this->generateToken();
             User::where([['id', Auth::id()], ['token', null]])->update(array('token' => $token));
-            return response(json_encode(["token" => $token]), 200)->header('Content-Type', 'application/json');
+            $mensaje = "Session Iniciada";
         }else{
-
 	    	$mensaje = "Email o contraseña incorrecta";
-            return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
         }
+        return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
     		
     }
 
     function logout(Request $request){
     	$token = $request->input('token');
-    	$mensaje = "Logout";
+    	$mensaje = "Session Cerradas";
 
         // Activem CORS
         header("Access-Control-Allow-Origin: *");
