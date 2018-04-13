@@ -44,6 +44,10 @@ class UsuariosController extends Master
 
     function conectados(Request $request){
         $id_usuario = $this->getIdUserFromToken($request->input('token'));
+
+        // Activem CORS
+        header("Access-Control-Allow-Origin: *");
+        
         if($id_usuario != false){
             $consulta = User::select("name")
                   ->where([["token", "<>", "null"],["id", "<>", $id_usuario]])
