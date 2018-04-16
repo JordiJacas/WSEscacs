@@ -19,7 +19,7 @@ class UsuariosController extends Master
 
     	if (Auth::attempt(['email' => $email, 'password' => $password])){
 	    	$token = $this->generateToken();
-            User::where([['id', Auth::id()], ['token', null]])->update(array('token' => $token));
+            User::where('id', Auth::id())->update(array('token' => $token));
             $mensaje = "Session Iniciada";
             
             return response(json_encode(["mensaje" => $mensaje, "token" => $token]), 200)->header('Content-Type', 'application/json');
@@ -32,11 +32,15 @@ class UsuariosController extends Master
     }
 
     function logout(Request $request){
-    	$token = $request->input('token');
-    	$mensaje = "Logout";
-
+        $id_usuario = $this->getIdUserFromToken($request->input('token'));  
         // Activem CORS
         header("Access-Control-Allow-Origin: *");
+
+        if($id_usuario != false){
+            $mensaje = "Session cerrada";
+        }else {
+            $mensaje="No se ha podido cerrar la session";
+        }
         
     	return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
     }
@@ -47,7 +51,7 @@ class UsuariosController extends Master
 
         // Activem CORS
         header("Access-Control-Allow-Origin: *");
-        
+
         if($id_usuario != false){
             $consulta = User::select("name")
                   ->where([["token", "<>", "null"],["id", "<>", $id_usuario]])
@@ -58,10 +62,10 @@ class UsuariosController extends Master
                 $usernames[] = $value["name"];
             }
             return response(json_encode(["usernames" => $usernames]), 200)->header('Content-Type', 'application/json');
-        }else 
-
-            $mensaje="No se ha podido obtener el usuario";
-            return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');            
+        }else{
+            $mensaje="No se ha encontrado usuarios conectados";
+            return response(json_encode(["id_usuario" => $id_usuario, "mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
+        }            
     }
 
     private function generateToken(){
