@@ -37,7 +37,7 @@ class UsuariosController extends Master
         // Activem CORS
         header("Access-Control-Allow-Origin: *");
 
-        User::where('token', $token)->update(array('token' => null));
+        User::where('name', $token)->update(array('token' => null));
         $mensaje = "Session cerrada";
         
     	return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
