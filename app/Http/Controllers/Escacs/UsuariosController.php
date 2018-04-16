@@ -32,17 +32,13 @@ class UsuariosController extends Master
     }
 
     function logout(Request $request){
-        //$id_usuario = $this->getIdUserFromToken($request->input('token'));
+        $id_usuario = $this->getIdUserFromToken($request->input('token'));
         $token = $request->input('token');
         // Activem CORS
         header("Access-Control-Allow-Origin: *");
 
-        //if($id_usuario != false){
-            User::where('name', $token)->update(array('token' => null));
-            //$mensaje = "Session cerrada";
-        //}else {
-            //$mensaje="No se ha podido cerrar la session";
-        //}
+        User::where('token', $token)->update(array('token' => null));
+        $mensaje = "Session cerrada";
         
     	return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
     }
