@@ -28,7 +28,7 @@ class UsuariosController extends Master
 	    	$mensaje = "Email o contraseña incorrecta";
             return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
         }
-    		
+    		  
     }
 
     function logout(Request $request){

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Escacs\;
+namespace App\Http\Controllers\Escacs;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Escacs\Master;
@@ -14,6 +14,8 @@ class InvitacionController extends Master
     function invitar(Request $request){
     	$userID1 = $this->getIdUserFromToken($request->input('token'));
     	$userID2 = $this->getIdUserFromName($request->input('name'));
+
+        header("Access-Control-Allow-Origin: *");
 
     	if($userID1 != false && $userID2 != false){
     		$solicitudesPartida = new Invitaciones;
