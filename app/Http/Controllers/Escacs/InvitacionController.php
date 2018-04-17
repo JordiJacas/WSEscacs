@@ -31,9 +31,12 @@ class InvitacionController extends Master
 
     function ver(Request $request){
     	$id_usuario = $this->getIdUserFromToken($request->input('token'));
+
+        header("Access-Control-Allow-Origin: *");
+        
     	if($id_usuario != false){
     		$mensaje = Invitaciones::from('users as u1')
-    			->join('solicitudesPartidas as sp', function($join){
+    			->join('Invitaciones as sp', function($join){
                     $join->on('u1.id', '=', 'sp.id_usuario2');
                 })->join('users as u2', function($join){
                     $join->on('u2.id', '=', 'sp.id_usuario1');
