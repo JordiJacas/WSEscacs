@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Escacs\;
+namespace App\Http\Controllers\Escacs;  
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Escacs\Master;
@@ -15,18 +15,18 @@ class TableroController extends Master
         $userID1 = $this->getIdUserFromToken($request->input('token'));
         $userID2 = $this->getIdUserFromName($request->input('name'));
 
+        header("Access-Control-Allow-Origin: *");
+
+        $fichas = "";
+
         if($userID1 != false && $userID2 != false){
             $partida = Partida::select("id")->where([["id_jugador_negro", $userID1],["id_jugador_blanco", $userID2]])->orWhere([["id_jugador_negro", $userID2],["id_jugador_blanco", $userID1]]);
             if($partida->count() > 0){
                 $idPartida = $partida->first()->toArray()["id"];
                 $fichas = Ficha::select("color", "tipo", "fila", "columna")->where("id_partida", $idPartida)->get()->toArray();
                 $mensaje = "Partida encontrada";
-            }else $mensaje = "No se ha encontrado la partida.";
-
-            
-            
-        }else 
-            $mensaje="No se ha podido obtener el usuario";
+            }else{ $mensaje = "No se ha encontrado la partida.";}
+        }else{$mensaje="No se ha podido obtener el usuario";}
 
         return response(json_encode(["mensaje"=>$mensaje, "tablero" => $fichas]), 200)->header('Content-Type', 'application/json');
     }
@@ -38,6 +38,8 @@ class TableroController extends Master
         $toColumna = $request->input('toColumna');
         $fromFila = $request->input('fromFila');
         $fromColumna = $request->input('fromColumna');
+
+        header("Access-Control-Allow-Origin: *");
 
         if($userID1 != false && $userID2 != false){
             $partida = Partida::select("id", "turno", "id_jugador_negro", "id_jugador_blanco")

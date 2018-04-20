@@ -54,6 +54,8 @@ class InvitacionController extends Master
         $userID1 = $this->getIdUserFromToken($request->input('token'));
         $userID2 = $this->getIdUserFromName($request->input('name'));
         $respuesta = $request->input('respuesta');
+
+        header("Access-Control-Allow-Origin: *");
  
         if($userID1 != false && $userID2 != false){
             if($respuesta == 1){
