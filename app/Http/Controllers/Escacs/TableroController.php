@@ -45,7 +45,6 @@ class TableroController extends Master
             $partida = Partida::select("id", "turno", "id_jugador_negro", "id_jugador_blanco")
                         ->where([["id_jugador_negro", $userID1], ["id_jugador_blanco", $userID2]])
                         ->orWhere([["id_jugador_negro", $userID2], ["id_jugador_blanco", $userID1]]);
-            
             if($partida->count() == 1){
                 $partida = $partida->first();
                 
@@ -65,10 +64,10 @@ class TableroController extends Master
 
                         $mensaje="ficha movida";
                     }
-                }else $mensaje = "No es tu turno.";
-            }else $mensaje = "No se ha encontrado la partida.";
-        }else $mensaje="No se ha podido obtener el usuario";
+                }else{$mensaje = "No es tu turno.";}
+            }else{$mensaje = "No se ha encontrado la partida.";}
+        }else{$mensaje="No se ha podido obtener el usuario";}
         
-        return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
+       return response(json_encode(["mensaje" => $mensaje]), 200)->header('Content-Type', 'application/json');
     }
 }
